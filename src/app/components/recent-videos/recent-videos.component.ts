@@ -380,9 +380,8 @@ export class RecentVideosComponent implements OnInit {
   }
 
   fileSelectionChanged(event: MatSelectionListChange): void {
-    // TODO: make sure below line is possible (_selected is private)
-    const adding = event.options['_selected'];
-    const value = adding.value;
+    const adding = event.options[0].selected;
+    const value = event.options[0].value;
     if (adding) {
       this.selected_data.push(value.uid);
       this.selected_data_objs.push(value);
@@ -391,7 +390,8 @@ export class RecentVideosComponent implements OnInit {
       this.selected_data_objs = this.selected_data_objs.filter(e => e.uid !== value.uid);
     }
 
-    this.fileSelectionEmitter.emit({new_selection: this.selected_data, thumbnailURL: this.selected_data_objs[0].thumbnailURL});
+    const thumbnailURL = this.selected_data_objs.length == 0 ? null : this.selected_data_objs[0].thumbnailURL
+    this.fileSelectionEmitter.emit({new_selection: this.selected_data, thumbnailURL: thumbnailURL});
   }
 
   toggleSelectionOrder(): void {
